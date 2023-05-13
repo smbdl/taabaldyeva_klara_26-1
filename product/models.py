@@ -1,26 +1,33 @@
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=35)
+    name = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name
 
 
+class Tag(models.Model):
+    name = models.CharField(max_length=100)
+
+
 class Product(models.Model):
-    title = models.CharField(max_length=50)
-    description = models.TextField(max_length=300)
-    price = models.IntegerField(default=0)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    title = models.CharField(max_length=100)
+    description = models.TextField(null=True, blank=True)
+    price = models.IntegerField()
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='category')
+    tags = models.ManyToManyField(Tag, blank=True)
 
     def __str__(self):
         return self.title
 
 
 class Review(models.Model):
-    text = models.TextField(max_length=310)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    text = models.TextField(null=True, blank=True)
+    stars = models.IntegerField(blank=True, validators=[MaxValueValidator(5), MinValueValidator(1)], default=1)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_reviews')
 
     def __str__(self):
         return self.text

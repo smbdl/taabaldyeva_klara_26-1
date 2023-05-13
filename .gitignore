@@ -1,3 +1,7 @@
 .idea
 .gitignore
-venv
+.env
+db.sqlite3
+static
+media
+db.json
