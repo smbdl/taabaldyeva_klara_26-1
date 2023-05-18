@@ -17,12 +17,17 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
-from shop_api import views
+from product.views import ReviewListCreateAPIView, ReviewDetailAPIView, products_reviews_api_view, \
+    ProductDetailAPIView, ProductListCreateAPIView, CategoryListCreateAPIView, CategoryDetailAPIView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/v1/', include('product.urls')),
+    path('api/v1/categories/', CategoryListCreateAPIView.as_view()),
+    path('api/v1/categories/<int:pk>/', CategoryDetailAPIView.as_view()),
+    path('api/v1/products/', ProductListCreateAPIView.as_view()),
+    path('api/v1/products/<int:pk>/', ProductDetailAPIView.as_view()),
+    path('api/v1/reviews/', ReviewListCreateAPIView.as_view()),
+    path('api/v1/reviews/<int:pk>/', ReviewDetailAPIView.as_view()),
+    path('api/v1/products/reviews/', products_reviews_api_view),
     path('api/v1/users/', include('users.urls'))
 ]
-
-urlpatterns += views.urlpatterns
